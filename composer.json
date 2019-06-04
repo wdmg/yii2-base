@@ -1,0 +1,32 @@
+{
+  "name": "wdmg/yii2-base",
+  "description": "Base module interface",
+  "keywords": ["yii2", "yii2-base", "base module", "wdmg"],
+  "type": "yii2-extension",
+  "license": "MIT",
+  "version": "1.0.0",
+  "homepage": "https://github.com/wdmg/yii2-base",
+  "support": {
+    "source": "https://github.com/wdmg/yii2-base",
+    "issues": "https://github.com/wdmg/yii2-base/issues"
+  },
+  "authors": [
+    {
+      "name": "Alexsander Vyshnyvetskyy",
+      "email": "alex.vyshnyvetskyy@gmail.com"
+    },
+    {
+      "name": "W.D.M.Group, Ukraine",
+      "email": "wdmg.com.ua@gmail.com"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "^2.0.19"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "wdmg\\base\\": ""
+    }
+  }
+}
