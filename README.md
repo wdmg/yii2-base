@@ -9,7 +9,7 @@ Base module interface
 
 # Requirements 
 * PHP 5.6 or higher
-* Yii2 v.2.0.19 and newest
+* Yii2 v.2.0.20 and newest
 
 # Installation
 To install the module, run the following command in the console:
@@ -17,4 +17,5 @@ To install the module, run the following command in the console:
 `$ composer require "wdmg/yii2-base"`
 
 # Status and version [in progress development]
+* v.1.0.1 - Module refactoring
 * v.1.0.0 - Added base module interface
