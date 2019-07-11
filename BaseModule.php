@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.0.1
+ * @version         1.0.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.0.1";
+    private $version = "1.0.2";
 
     /**
      * @var integer, priority of initialization
@@ -253,15 +253,31 @@ class BaseModule extends Module implements BootstrapInterface
 
     /**
      * Build dashboard navigation items for NavBar
+     * @param $createLink boolean, if you need to add a menu
+     * item to create a new model (entity)
      * @return array of current module nav items
      */
-    public function dashboardNavItems()
+    public function dashboardNavItems($createLink = false)
     {
-        return [
+        $items = [
             'label' => $this->name,
             'url' => [$this->routePrefix . '/'. $this->id .'/'],
             'active' => (\Yii::$app->controller->module->id == $this->id) ? true : false
         ];
+
+        if ($createLink) {
+            $items['items'] = [
+                /*'<li class="divider"></li>',*/
+                [
+                    'label' => 'Create',
+                    'icon' => 'fa-plus',
+                    'url' => [$this->routePrefix . '/' . $this->id . '/create'],
+                    'active' => ((\Yii::$app->controller->module->id == $this->id) && (\Yii::$app->controller->action->id == 'create')) ? true : false
+                ],
+            ];
+        }
+
+        return $items;
     }
 
     /**
