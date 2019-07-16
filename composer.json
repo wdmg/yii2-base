@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-base", "base module", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://github.com/wdmg/yii2-base",
   "support": {
     "source": "https://github.com/wdmg/yii2-base",
@@ -27,6 +27,11 @@
   "autoload": {
     "psr-4": {
       "wdmg\\base\\": ""
+    }
+  },
+  "extra": {
+    "options": {
+      "routePrefix": "admin"
     }
   }
 }

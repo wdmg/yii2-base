@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.3 (2019-07-16)
+ * Added extra options to composer.json (for Butterfly.CMS implementation)
+ 
 ## 1.0.2 (2019-07-11)
  * Refactoring method dashboardNavItems()
  
