@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.0.3
+ * @version         1.0.4
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.0.3";
+    private $version = "1.0.4";
 
     /**
      * @var integer, priority of initialization
@@ -344,5 +344,46 @@ class BaseModule extends Module implements BootstrapInterface
                 'suffix' => ''
             ]
         ], true);
+    }
+
+    /**
+     * Main method of installation module
+     * @return boolean, false if install failure
+     */
+    public function install() {
+
+        if (Yii::$app->getModule('admin/options') && isset(Yii::$app->options)) {
+            $props = get_class_vars($this::className());
+
+            unset($props['name']);
+            unset($props['description']);
+            unset($props['controllerNamespace']);
+            unset($props['defaultRoute']);
+            unset($props['routePrefix']);
+            unset($props['vendor']);
+            unset($props['controllerMap']);
+
+            foreach ($props as $prop => $defaultValue) {
+                if (is_array($defaultValue))
+                    Yii::$app->options->set($this->id .'.'. $prop, serialize($defaultValue), 'array', null, true, false);
+                elseif (is_object($defaultValue))
+                    Yii::$app->options->set($this->id .'.'. $prop, serialize($defaultValue), 'object', null, true, false);
+                elseif (is_bool($defaultValue))
+                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, 'boolean', null, true, false);
+                else
+                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, null, null, true, false);
+            }
+            return true;
+        }
+
+        return true;
+    }
+
+    /**
+     * Main method of uninstallation module
+     * @return boolean, false if uninstall failure
+     */
+    public function uninstall() {
+        return true;
     }
 }

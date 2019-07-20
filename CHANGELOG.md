@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.4 (2019-07-20)
+ * Added methods of install/uninstall modules
+ 
 ## 1.0.3 (2019-07-16)
  * Added extra options to composer.json (for Butterfly.CMS implementation)
  
