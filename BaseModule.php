@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.0.4
+ * @version         1.0.5
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.0.4";
+    private $version = "1.0.5";
 
     /**
      * @var integer, priority of initialization
@@ -238,16 +238,26 @@ class BaseModule extends Module implements BootstrapInterface
     }
 
     /**
+     * Normalize route
+     * @return string of current route
+     */
+    public function normalizeRoute($route)
+    {
+        $route = str_replace('/', '', $route);
+        $route = '/'.$route;
+        $route = str_replace('//', '/', $route);
+        return $route;
+    }
+
+    /**
      * Normalize route prefix
      * @return string of current route prefix
      */
     public function routePrefixNormalize()
     {
-        if(!empty($this->routePrefix)) {
-            $this->routePrefix = str_replace('/', '', $this->routePrefix);
-            $this->routePrefix = '/'.$this->routePrefix;
-            $this->routePrefix = str_replace('//', '/', $this->routePrefix);
-        }
+        if(!empty($this->routePrefix))
+            $this->routePrefix = self::normalizeRoute($this->routePrefix);
+
         return $this->routePrefix;
     }
 
