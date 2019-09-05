@@ -100,6 +100,8 @@ class BaseModule extends Module implements BootstrapInterface
         // Normalize route prefix
         $this->routePrefixNormalize();
 
+        // Set meta data of current module
+        $this->setMetaData();
     }
 
     /**
@@ -319,8 +321,6 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        // Set meta data of current module
-        $this->setMetaData();
 
         // Get URL path prefix if exist
         if (isset($this->routePrefix)) {
