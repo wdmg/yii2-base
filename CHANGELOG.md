@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.1.0 (2019-09-07)
+ * Added getOption() method
+ * Change order by call setMetaData() function
+ 
 ## 1.0.5 (2019-07-26)
  * Normalize route prefix refactoring
 

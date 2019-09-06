@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.0.5
+ * @version         1.1.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.0.5";
+    private $version = "1.1.0";
 
     /**
      * @var integer, priority of initialization
@@ -191,6 +191,63 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function getMetaData() {
         return $this->meta;
+    }
+
+    /**
+     * Get option from DB, params or module public properties
+     * @return mixed of params or current module properties
+     */
+    public function getOption($option) {
+        $value = null;
+        if (isset(Yii::$app->options)) {
+            if ($value = Yii::$app->options->get($option)) {
+
+                if (preg_match('/\./', $option)) {
+                    $split = explode('.', $option, 2);
+                    if (count($split) > 1) {
+                        if (!empty($split[0]) && !empty($split[1])) {
+                            $option = $split[1];
+                        }
+                    }
+                }
+
+                if (isset(Yii::$app->params[$option]))
+                    $value = Yii::$app->params[$option];
+                elseif (isset($this->$option))
+                    $value = $this->$option;
+            }
+        } else {
+
+            if (preg_match('/\./', $option)) {
+                $split = explode('.', $option, 2);
+                if (count($split) > 1) {
+                    if (!empty($split[0]) && !empty($split[1])) {
+                        $section = $split[0];
+                        $option = $split[1];
+                    }
+                }
+            }
+
+            if (isset(Yii::$app->params[$option]))
+                $value = Yii::$app->params[$option];
+            elseif (isset($this->$option))
+                $value = $this->$option;
+
+        }
+
+        if (YII_ENV_DEV) {
+
+            if (isset(Yii::$app->options))
+                Yii::debug('Option from options`'.$option.'` is ' . gettype(Yii::$app->options->get('admin.checkForUpdates')) .' and value: '. var_export(Yii::$app->options->get('admin.checkForUpdates'), true));
+
+            if (isset(Yii::$app->params['admin.checkForUpdates']))
+                Yii::debug('Option from params`'.$option.'` is ' . gettype(Yii::$app->params['admin.checkForUpdates']) .' and value: '. var_export(Yii::$app->params['admin.checkForUpdates'], true));
+
+            Yii::debug('`'.$option.'` is ' . gettype($value) .' and value: '. var_export($value, true));
+
+        }
+
+        return $value;
     }
 
     /**
