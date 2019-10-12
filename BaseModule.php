@@ -432,9 +432,9 @@ class BaseModule extends Module implements BootstrapInterface
 
             foreach ($props as $prop => $defaultValue) {
                 if (is_array($defaultValue))
-                    Yii::$app->options->set($this->id .'.'. $prop, serialize($defaultValue), 'array', null, true, false);
+                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, 'array', null, true, false);
                 elseif (is_object($defaultValue))
-                    Yii::$app->options->set($this->id .'.'. $prop, serialize($defaultValue), 'object', null, true, false);
+                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, 'object', null, true, false);
                 elseif (is_bool($defaultValue))
                     Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, 'boolean', null, true, false);
                 else
