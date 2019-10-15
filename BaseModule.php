@@ -256,7 +256,7 @@ class BaseModule extends Module implements BootstrapInterface
     public function afterAction($action, $result)
     {
 
-        // Log to debuf console missing translations
+        // Log missing translations
         if (is_array($this->missingTranslation) && YII_ENV == 'dev')
             Yii::warning('Missing translations: ' . var_export($this->missingTranslation, true), 'i18n');
 
@@ -274,12 +274,12 @@ class BaseModule extends Module implements BootstrapInterface
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'en-US',
             'basePath' => '@vendor/' . $this->vendor . '/yii2-' . $this->id . '/messages',
-            'on missingTranslation' => function($event) {
+            'on missingTranslation' => function ($event) {
 
                 if (YII_ENV == 'dev')
                     $this->missingTranslation[] = $event->message;
 
-            },
+            }
         ];
 
         // Name and description translation of module
@@ -336,7 +336,6 @@ class BaseModule extends Module implements BootstrapInterface
 
         if ($createLink) {
             $items['items'] = [
-                /*'<li class="divider"></li>',*/
                 [
                     'label' => 'Create',
                     'icon' => 'fa-plus',
@@ -411,6 +410,21 @@ class BaseModule extends Module implements BootstrapInterface
                 'suffix' => ''
             ]
         ], true);
+
+
+        // Get missing translations
+        $missingTranslation = $this->missingTranslation;
+
+        // Log missing translations
+        if (!($app instanceof \yii\console\Application) && $this->module) {
+            \yii\base\Event::on(\yii\base\Controller::className(), \yii\base\Controller::EVENT_AFTER_ACTION, function ($event) use ($missingTranslation) {
+
+                // Log missing translations
+                if (is_array($missingTranslation) && YII_ENV == 'dev')
+                    Yii::warning('Missing translations: ' . var_export($missingTranslation, true), 'i18n');
+
+            });
+        }
     }
 
     /**
