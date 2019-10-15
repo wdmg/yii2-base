@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.1 (2019-10-15)
+ * Fix options syntax
+ 
 ## 1.1.0 (2019-09-07)
  * Added getOption() method
  * Change order by call setMetaData() function
