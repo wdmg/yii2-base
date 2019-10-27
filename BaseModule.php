@@ -350,14 +350,19 @@ class BaseModule extends Module implements BootstrapInterface
 
     /**
      * Check if module exist
+     * @param $id string, the module name (if the module name does not contain the parent module,
+     * it will be assigned from the launch module)
+     * @param $returnInstance boolean, the return instance of module
      * @return boolean, null or intance
      */
     public function moduleLoaded($id, $returnInstance = false)
     {
-        // If module configured of parent module
-        $parent = $this->module->id;
-        if ($parent)
-            $id = $parent . '/' . $id;
+        // If module configured without parent module, like `admin/...`
+        if (!(preg_match('/\/[^\s]+/', $id))) {
+            $parent = $this->module->id;
+            if ($parent)
+                $id = $parent . '/' . $id;
+        }
 
         if (Yii::$app->hasModule($id)) {
             if($returnInstance)
