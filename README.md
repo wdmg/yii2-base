@@ -17,6 +17,6 @@ To install the module, run the following command in the console:
 `$ composer require "wdmg/yii2-base"`
 
 # Status and version [ready to use]
+* v.1.1.2 - Fix detect of loading modules
 * v.1.1.1 - Fix options syntax
 * v.1.1.0 - Added getOption() method
-* v.1.0.5 - Normalize route prefix refactoring
