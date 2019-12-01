@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.1.2
+ * @version         1.1.3
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -438,7 +438,10 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function install() {
 
-        if (Yii::$app->getModule('admin/options') && isset(Yii::$app->options)) {
+        if (!($options = Yii::$app->getModule('admin/options')))
+            $options = Yii::$app->getModule('options');
+
+        if (!is_null($options) && isset(Yii::$app->options)) {
             $props = get_class_vars($this::className());
 
             unset($props['name']);
@@ -449,20 +452,20 @@ class BaseModule extends Module implements BootstrapInterface
             unset($props['vendor']);
             unset($props['controllerMap']);
 
-            foreach ($props as $prop => $defaultValue) {
-                if (is_array($defaultValue))
-                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, 'array', null, true, false);
-                elseif (is_object($defaultValue))
-                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, 'object', null, true, false);
-                elseif (is_bool($defaultValue))
-                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, 'boolean', null, true, false);
+            foreach ($props as $prop => $value) {
+                if (is_array($value))
+                    Yii::$app->options->set($this->id .'.'. $prop, $value, 'array', null, true, false);
+                elseif (is_object($value))
+                    Yii::$app->options->set($this->id .'.'. $prop, $value, 'object', null, true, false);
+                elseif (is_bool($value))
+                    Yii::$app->options->set($this->id .'.'. $prop, ($value) ? 1 : 0, 'boolean', null, true, false);
                 else
-                    Yii::$app->options->set($this->id .'.'. $prop, $defaultValue, null, null, true, false);
+                    Yii::$app->options->set($this->id .'.'. $prop, $value, null, null, true, false);
             }
             return true;
         }
 
-        return true;
+        return false;
     }
 
     /**

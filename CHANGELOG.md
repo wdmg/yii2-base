@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.3 (2019-12-02)
+ * Fix loading options during module installation
+ 
 ## 1.1.2 (2019-10-28)
  * Fix detect of loading modules
  
