@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.1.3
+ * @version         1.1.4
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.1.2";
+    private $version = "1.1.4";
 
     /**
      * @var integer, priority of initialization
@@ -422,7 +422,7 @@ class BaseModule extends Module implements BootstrapInterface
 
         // Log missing translations
         if (!($app instanceof \yii\console\Application) && $this->module) {
-            \yii\base\Event::on(\yii\base\Controller::className(), \yii\base\Controller::EVENT_AFTER_ACTION, function ($event) use ($missingTranslation) {
+            \yii\base\Event::on(\yii\base\Controller::class, \yii\base\Controller::EVENT_AFTER_ACTION, function ($event) use ($missingTranslation) {
 
                 // Log missing translations
                 if (is_array($missingTranslation) && YII_ENV == 'dev')
@@ -442,7 +442,8 @@ class BaseModule extends Module implements BootstrapInterface
             $options = Yii::$app->getModule('options');
 
         if (!is_null($options) && isset(Yii::$app->options)) {
-            $props = get_class_vars($this::className());
+            //$props = get_class_vars($this::className());
+            $props = get_class_vars(get_class($this));
 
             unset($props['name']);
             unset($props['description']);

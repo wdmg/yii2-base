@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.4 (2019-12-10)
+ * Fixed deprecated class declaration
+ 
 ## 1.1.3 (2019-12-02)
  * Fix loading options during module installation
  
