@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.5 (2019-12-31)
+ * Added extended DynamicModel with `setAttributeLabel()` and `setAttributeLabels()` methods
+ 
 ## 1.1.4 (2019-12-10)
  * Fixed deprecated class declaration
  
