@@ -1,6 +1,7 @@
 <?php
 
 namespace wdmg\base;
+use wdmg\helpers\ArrayHelper;
 
 /**
  * Yii2 DynamicModel
@@ -16,10 +17,10 @@ namespace wdmg\base;
 
 class DynamicModel extends \yii\base\DynamicModel {
 
-    protected $_labels;
+    protected $_labels = [];
 
     public function setAttributeLabel($label) {
-        $this->_labels[] = $label;
+        $this->_labels = ArrayHelper::merge($this->_labels, $label);
     }
 
     public function setAttributeLabels($labels) {
