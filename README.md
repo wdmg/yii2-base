@@ -17,6 +17,6 @@ To install the module, run the following command in the console:
 `$ composer require "wdmg/yii2-base"`
 
 # Status and version [ready to use]
+* v.1.1.6 - Added isBackend(), isConsole() methods
 * v.1.1.5 - Added extended DynamicModel with `setAttributeLabel()` and `setAttributeLabels()` methods
 * v.1.1.4 - Fixed deprecated class declaration
-* v.1.1.3 - Fix loading options during module installation

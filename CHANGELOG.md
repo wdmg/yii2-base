@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.6 (2020-01-04)
+ * Added isBackend(), isConsole() methods 
+
 ## 1.1.5 (2019-12-31)
  * Added extended DynamicModel with `setAttributeLabel()` and `setAttributeLabels()` methods
  

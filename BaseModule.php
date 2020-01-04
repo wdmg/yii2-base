@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.1.5
+ * @version         1.1.6
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.1.5";
+    private $version = "1.1.6";
 
     /**
      * @var integer, priority of initialization
@@ -374,6 +374,30 @@ class BaseModule extends Module implements BootstrapInterface
         }
 
         return null;
+    }
+
+    /**
+     * Returns a value indicating whether the current request made for admin dashboard.
+     *
+     * @return bool
+     */
+    public function isBackend()
+    {
+        $isBackend = false;
+        if (substr(Yii::$app->request->getUrl(), 0, 6) == '/admin')
+            $isBackend = true;
+
+        return $isBackend;
+    }
+
+    /**
+     * Returns a value indicating whether the current request is made via command line (console).
+     *
+     * @return bool
+     */
+    public function isConsole()
+    {
+        return Yii::$app->request->isConsoleRequest;
     }
 
     /**
