@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.7 (2020-03-25)
+ * Up to date dependencies
+
 ## 1.1.6 (2020-01-04)
  * Added isBackend(), isConsole() methods 
 

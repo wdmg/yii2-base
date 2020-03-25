@@ -7,7 +7,7 @@ use wdmg\helpers\ArrayHelper;
  * Yii2 DynamicModel
  *
  * @category        Model
- * @version         1.1.6
+ * @version         1.1.7
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
