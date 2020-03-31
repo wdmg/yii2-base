@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.8 (2020-03-31)
+ * Log activity of modules and user actions
+ 
 ## 1.1.7 (2020-03-25)
  * Up to date dependencies
 
