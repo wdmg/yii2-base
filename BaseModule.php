@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.1.7
+ * @version         1.1.8
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.1.7";
+    private $version = "1.1.8";
 
     /**
      * @var integer, priority of initialization
@@ -68,6 +68,14 @@ class BaseModule extends Module implements BootstrapInterface
      * @var array of strings missing translations
      */
     public $missingTranslation;
+
+    /**
+     * Private properties of child modules
+     * @var array
+     */
+    private $privateProperties = [
+        'name', 'description', 'controllerNamespace', 'defaultRoute', 'routePrefix', 'vendor', 'controllerMap'
+    ];
 
     /**
      * {@inheritdoc}
@@ -380,6 +388,7 @@ class BaseModule extends Module implements BootstrapInterface
      * Returns a value indicating whether the current request made for admin dashboard.
      *
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public function isBackend()
     {
@@ -457,7 +466,35 @@ class BaseModule extends Module implements BootstrapInterface
     }
 
     /**
+     * Register log activity of modules and user actions.
+     * Used in controllers.
+     *
+     * @param $message
+     * @param null $event
+     * @param null $type
+     * @param int $level
+     * @see \wdmg\activity\models\Activity
+     */
+    public function logActivity($message, $event = null, $type = null, $level = 2) {
+        if (
+            (!empty($message) && !is_null($event)) &&
+            class_exists('\wdmg\activity\models\Activity') &&
+            $this->moduleLoaded('activity') &&
+            isset(Yii::$app->activity)
+        ) {
+            Yii::$app->activity->set(
+                $message,
+                $event,
+                $type,
+                $level
+            );
+        }
+    }
+
+    /**
      * Main method of installation module
+     * @see \wdmg\options\models\Options
+     *
      * @return boolean, false if install failure
      */
     public function install() {
@@ -466,18 +503,14 @@ class BaseModule extends Module implements BootstrapInterface
             $options = Yii::$app->getModule('options');
 
         if (!is_null($options) && isset(Yii::$app->options)) {
-            //$props = get_class_vars($this::className());
+
             $props = get_class_vars(get_class($this));
-
-            unset($props['name']);
-            unset($props['description']);
-            unset($props['controllerNamespace']);
-            unset($props['defaultRoute']);
-            unset($props['routePrefix']);
-            unset($props['vendor']);
-            unset($props['controllerMap']);
-
             foreach ($props as $prop => $value) {
+
+                // Skip private properties of modules
+                if (in_array($prop, $this->privateProperties))
+                    continue;
+
                 if (is_array($value))
                     Yii::$app->options->set($this->id .'.'. $prop, $value, 'array', null, true, false);
                 elseif (is_object($value))
@@ -487,6 +520,7 @@ class BaseModule extends Module implements BootstrapInterface
                 else
                     Yii::$app->options->set($this->id .'.'. $prop, $value, null, null, true, false);
             }
+
             return true;
         }
 
