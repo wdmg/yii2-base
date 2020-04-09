@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.*
+ * Added base ActiveRecord and ActiveRecordML models for multi-language implementation
+ 
 ## 1.1.8 (2020-03-31)
  * Log activity of modules and user actions
  
