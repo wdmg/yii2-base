@@ -39,7 +39,7 @@ class ActiveRecord extends BaseActiveRecord
 
     public $baseRoute;
 
-    public $route;
+    //public $route;
     public $layout;
     public $url;
 
