@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.1.8
+ * @version         1.2.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.1.8";
+    private $version = "1.2.0";
 
     /**
      * @var integer, priority of initialization
