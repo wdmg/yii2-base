@@ -2,13 +2,28 @@
 
 namespace wdmg\base\models;
 
+/**
+ * Yii2 ActiveRecordML
+ *
+ * @category        Model
+ * @version         1.2.0
+ * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
+ * @link            https://github.com/wdmg/yii2-base
+ * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
+ * @license         https://opensource.org/licenses/MIT Massachusetts Institute of Technology (MIT) License
+ *
+ * @property int $source_id
+ * @property int $parent_id
+ * @property string $locale
+ * @package wdmg\base\models
+ */
+
 use Yii;
-use yii\db\Expression;
 use wdmg\base\models\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the base model class of yii\db\ActiveRecord
+ * Yii2 ActiveRecord. This is the extended model class of yii\db\ActiveRecord
  * with multi-languages support.
  *
  * @property int $source_id
@@ -16,6 +31,7 @@ use yii\helpers\ArrayHelper;
  * @property string $locale
  * @package wdmg\base\models
  */
+
 class ActiveRecordML extends ActiveRecord
 {
 
@@ -361,7 +377,7 @@ class ActiveRecordML extends ActiveRecord
 
                     // Init UrlManager and configure
                     $urlManager = new \wdmg\translations\components\UrlManager($config);
-                    if ($this->status == self::STATUS_DRAFT && $realUrl) {
+                    if (($this->hasAttribute('status') && $this->getAttribute('status') == self::STATUS_DRAFT) && $realUrl) {
                         if ($withScheme)
                             return \yii\helpers\Url::to(['default/view', 'route' => $this->route, 'alias' => $this->alias, 'draft' => 'true'], $withScheme);
                         else
@@ -374,7 +390,7 @@ class ActiveRecordML extends ActiveRecord
                     }
                 }
             } else {
-                if ($this->status == self::STATUS_DRAFT && $realUrl) {
+                if (($this->hasAttribute('status') && $this->getAttribute('status') == self::STATUS_DRAFT) && $realUrl) {
                     return \yii\helpers\Url::to(['default/view', 'route' => $this->route, 'alias' => $this->alias, 'draft' => 'true'], $withScheme);
                 } else {
                     return \yii\helpers\Url::to($this->route . '/' . $this->alias);

@@ -2,6 +2,18 @@
 
 namespace wdmg\base\models;
 
+/**
+ * Yii2 ActiveRecord
+ *
+ * @category        Model
+ * @version         1.2.0
+ * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
+ * @link            https://github.com/wdmg/yii2-base
+ * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
+ * @license         https://opensource.org/licenses/MIT Massachusetts Institute of Technology (MIT) License
+ *
+ */
+
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -11,7 +23,7 @@ use yii\db\ActiveRecord as BaseActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the base model class of yii\db\ActiveRecord.
+ * This is the extended model class of yii\db\ActiveRecord.
  *
  * @property int $id
  * @property string $name

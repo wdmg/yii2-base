@@ -1,7 +1,9 @@
 Changelog
 =========
 
-## 1.1.*
+## 1.2.0 (2020-04-14)
+ * Removing DynamicModel to models
+ * Fixed ActiveRecordML
  * Added base ActiveRecord and ActiveRecordML models for multi-language implementation
  
 ## 1.1.8 (2020-03-31)
