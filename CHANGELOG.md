@@ -2,6 +2,7 @@ Changelog
 =========
 
 ## 1.2.0 (2020-04-14)
+ * Added getModule() for base ActiveRecord model
  * Removing DynamicModel to models
  * Fixed ActiveRecordML
  * Added base ActiveRecord and ActiveRecordML models for multi-language implementation

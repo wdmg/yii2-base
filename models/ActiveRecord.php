@@ -51,9 +51,20 @@ class ActiveRecord extends BaseActiveRecord
 
     public $baseRoute;
 
-    //public $route;
     public $layout;
     public $url;
+
+    /**
+     * ID of parent module
+     * @var null|string
+     */
+    public $moduleId;
+
+    /**
+     * Instance of parent module
+     * @var null|object
+     */
+    private $_module;
 
     /**
      * {@inheritdoc}
@@ -64,12 +75,21 @@ class ActiveRecord extends BaseActiveRecord
 
         if (isset(Yii::$app->controller)) {
 
-            $module = Yii::$app->controller->module;
+            if (is_string($this->moduleId)) {
 
-            if (isset(Yii::$app->params[$module->id . ".baseRoute"])) {
-                $this->baseRoute = Yii::$app->params[$module->id . ".baseRoute"];
-            } else if (isset($module->baseRoute)) {
-                $this->baseRoute = $module->baseRoute;
+                if (!($this->_module = Yii::$app->getModule('admin/' . $this->moduleId, false)))
+                    $this->_module = Yii::$app->getModule($this->moduleId, false);
+
+            } else {
+                $this->_module = Yii::$app->controller->module;
+            }
+
+            if (isset($this->_module->id)) {
+                if (isset(Yii::$app->params[$this->_module->id . ".baseRoute"])) {
+                    $this->baseRoute = Yii::$app->params[$this->_module->id . ".baseRoute"];
+                } else if (isset($this->_module->baseRoute)) {
+                    $this->baseRoute = $this->_module->baseRoute;
+                }
             }
         }
     }
@@ -414,4 +434,17 @@ class ActiveRecord extends BaseActiveRecord
         return $this->url;
     }
 
+    /**
+     * Returns the instance (or id) of parent Module of current model
+     *
+     * @param bool $instance
+     * @return object|null
+     */
+    public function getModule($instance = false)
+    {
+        if ($instance)
+            return (is_object($this->_module)) ? $this->_module : null;
+
+        return (isset($this->_module->id)) ? $this->_module->id : null;
+    }
 }
