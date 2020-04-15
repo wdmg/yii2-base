@@ -310,7 +310,8 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function normalizeRoute($route)
     {
-        $route = str_replace('/', '', $route);
+        $route = ltrim($route, '/');
+        $route = rtrim($route, '/');
         $route = '/'.$route;
         $route = str_replace('//', '/', $route);
         return $route;
