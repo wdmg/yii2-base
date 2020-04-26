@@ -386,6 +386,16 @@ class BaseModule extends Module implements BootstrapInterface
     }
 
     /**
+     * Returns a value indicating whether the current request is made via command line (console).
+     *
+     * @return bool
+     */
+    public function isConsole()
+    {
+        return Yii::$app->request->isConsoleRequest;
+    }
+
+    /**
      * Returns a value indicating whether the current request made for admin dashboard.
      *
      * @return bool
@@ -393,6 +403,9 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function isBackend($onlyAuth = true)
     {
+        if ($this->isConsole())
+            return true;
+
         $isBackend = false;
         if (substr(Yii::$app->request->getUrl(), 0, 6) == '/admin')
             $isBackend = true;
@@ -401,16 +414,6 @@ class BaseModule extends Module implements BootstrapInterface
             $isBackend = false;
 
         return $isBackend;
-    }
-
-    /**
-     * Returns a value indicating whether the current request is made via command line (console).
-     *
-     * @return bool
-     */
-    public function isConsole()
-    {
-        return Yii::$app->request->isConsoleRequest;
     }
 
     /**
