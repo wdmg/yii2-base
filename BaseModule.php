@@ -391,11 +391,14 @@ class BaseModule extends Module implements BootstrapInterface
      * @return bool
      * @throws \yii\base\InvalidConfigException
      */
-    public function isBackend()
+    public function isBackend($onlyAuth = true)
     {
         $isBackend = false;
         if (substr(Yii::$app->request->getUrl(), 0, 6) == '/admin')
             $isBackend = true;
+
+        if ($onlyAuth && Yii::$app->getUser()->getIsGuest())
+            $isBackend = false;
 
         return $isBackend;
     }
