@@ -6,7 +6,7 @@ namespace wdmg\base\models;
  * Yii2 ActiveRecordML
  *
  * @category        Model
- * @version         1.2.0
+ * @version         1.2.1
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -42,6 +42,15 @@ class ActiveRecordML extends ActiveRecord
      * @note This variable will be override if you use the `wdmg\yii2-translations` module.
      */
     public $supportLocales = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        return $behaviors;
+    }
 
     /**
      * {@inheritdoc}

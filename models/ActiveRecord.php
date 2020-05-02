@@ -6,7 +6,7 @@ namespace wdmg\base\models;
  * Yii2 ActiveRecord
  *
  * @category        Model
- * @version         1.2.0
+ * @version         1.2.1
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -17,7 +17,7 @@ namespace wdmg\base\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
-use yii\behaviors\SluggableBehavior;
+use wdmg\base\behaviors\SluggableBehavior;
 use yii\db\Expression;
 use yii\db\ActiveRecord as BaseActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -149,12 +149,8 @@ class ActiveRecord extends BaseActiveRecord
                     'class' => SluggableBehavior::class,
                     'attribute' => ['name'],
                     'slugAttribute' => 'alias',
-                    'ensureUnique' => true,
-                    'skipOnEmpty' => true,
-                    'immutable' => true,
-                    'value' => function ($event) {
-                        return mb_substr($this->name, 0, 32);
-                    }
+                    'locale' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFKC; [ʹ, ʺ] Remove; [:Punctuation:] Remove;',
+                    'replacement' => '-'
                 ]
             ], $behaviors);
         }
@@ -278,9 +274,11 @@ class ActiveRecord extends BaseActiveRecord
     {
         parent::afterFind();
 
-        if (is_null($this->url))
-            $this->url = $this->getUrl();
-
+        if ($this->hasAttribute('url')) {
+            if (is_null($this->url)) {
+                $this->url = $this->getUrl();
+            }
+        }
     }
 
     /**
