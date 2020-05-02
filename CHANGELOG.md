@@ -2,6 +2,7 @@ Changelog
 =========
 
 ## 1.2.1 (2020-05-02)
+ * Added formName(), setFormName($name) methods for DynamicModel
  * Added SluggableBehavior(), implement for base ActiveRecord
 
 ## 1.2.0 (2020-04-14)

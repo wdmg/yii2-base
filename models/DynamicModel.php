@@ -18,16 +18,52 @@ use wdmg\helpers\ArrayHelper;
 class DynamicModel extends \yii\base\DynamicModel {
 
     protected $_labels = [];
+    protected $_formName;
 
+    /**
+     * Set one attribute label
+     *
+     * @param $label
+     */
     public function setAttributeLabel($label) {
         $this->_labels = ArrayHelper::merge($this->_labels, $label);
     }
 
+    /**
+     * Set all attribute labels
+     *
+     * @param $labels array of attributes and labels, like ['name' => 'User name']
+     */
     public function setAttributeLabels($labels) {
         $this->_labels = $labels;
     }
 
+    /**
+     * Returns all attribute labels
+     *
+     * @return array
+     */
     public function attributeLabels() {
         return $this->_labels;
+    }
+
+    /**
+     * Returns the form name that this model class should use.
+     *
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function formName()
+    {
+        return $this->_formName ?: parent::formName();
+    }
+
+    /**
+     * Set form name in input attribute, like `SomeFormName[user-name]`
+     * @param $name
+     */
+    public function setFormName($name)
+    {
+        $this->_formName = $name;
     }
 }
