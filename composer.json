@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-base", "base module", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "homepage": "https://github.com/wdmg/yii2-base",
   "support": {
     "source": "https://github.com/wdmg/yii2-base",
@@ -21,7 +21,7 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "^2.0.33"
+    "yiisoft/yii2": "^2.0.35"
   },
   "minimum-stability": "dev",
   "autoload": {

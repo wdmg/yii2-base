@@ -7,7 +7,7 @@ use wdmg\helpers\ArrayHelper;
  * Yii2 DynamicModel
  *
  * @category        Model
- * @version         1.2.1
+ * @version         1.2.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -17,7 +17,7 @@ use wdmg\helpers\ArrayHelper;
 
 class DynamicModel extends \yii\base\DynamicModel {
 
-    protected $_labels = [];
+    protected $_attributeLabels = [];
     protected $_formName;
 
     /**
@@ -25,8 +25,9 @@ class DynamicModel extends \yii\base\DynamicModel {
      *
      * @param $label
      */
-    public function setAttributeLabel($label) {
-        $this->_labels = ArrayHelper::merge($this->_labels, $label);
+    public function setAttributeLabel($attribute, $label) {
+        $this->_attributeLabels[$attribute] = $label;
+        return $this;
     }
 
     /**
@@ -35,7 +36,7 @@ class DynamicModel extends \yii\base\DynamicModel {
      * @param $labels array of attributes and labels, like ['name' => 'User name']
      */
     public function setAttributeLabels($labels) {
-        $this->_labels = $labels;
+        $this->_attributeLabels = $labels;
     }
 
     /**
@@ -44,7 +45,7 @@ class DynamicModel extends \yii\base\DynamicModel {
      * @return array
      */
     public function attributeLabels() {
-        return $this->_labels;
+        return array_merge(parent::attributeLabels(), $this->_attributeLabels);
     }
 
     /**
