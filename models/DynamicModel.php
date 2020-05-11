@@ -35,7 +35,7 @@ class DynamicModel extends \yii\base\DynamicModel {
      *
      * @param $labels array of attributes and labels, like ['name' => 'User name']
      */
-    public function setAttributeLabels($labels) {
+    public function setAttributeLabels(array $labels = []) {
         $this->_attributeLabels = $labels;
     }
 
