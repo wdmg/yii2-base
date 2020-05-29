@@ -25,12 +25,12 @@
   },
   "minimum-stability": "dev",
   "autoload": {
-    "bootstrap": "wdmg\\base\\BaseModule",
     "psr-4": {
       "wdmg\\base\\": ""
     }
   },
   "extra": {
+    "bootstrap": "wdmg\\base\\BaseModule",
     "options": {
       "routePrefix": "admin"
     }
