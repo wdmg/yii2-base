@@ -30,7 +30,6 @@
     }
   },
   "extra": {
-    "bootstrap": "wdmg\\base\\BaseModule",
     "options": {
       "routePrefix": "admin"
     }
