@@ -339,7 +339,7 @@ class BaseModule extends Module implements BootstrapInterface
     {
         $items = [
             'label' => $this->name,
-            'url' => [$this->routePrefix . '/'. $this->id .'/'],
+            'url' => [$this->routePrefix . '/'. $this->id . ((isset($this->defaultRoute)) ? '/' . $this->defaultRoute : '')],
             'active' => (\Yii::$app->controller->module->id == $this->id) ? true : false
         ];
 
@@ -431,29 +431,10 @@ class BaseModule extends Module implements BootstrapInterface
 
         // Add module URL rules
         $app->getUrlManager()->addRules([
-            $prefix . '<module:' . $this->id . '>/' => '<module>/' . $this->id . '/index',
-            $prefix . '<module:' . $this->id . '>/<controller:\w+>/' => '<module>/<controller>',
-            $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>' => '<module>/<controller>/<action>',
-            $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>/<id:\d+>' => '<module>/<controller>/<action>',
-            [
-                'pattern' => $prefix . '<module:' . $this->id . '>/',
-                'route' => '<module>/' . $this->id . '/index',
-                'suffix' => ''
-            ], [
-                'pattern' => $prefix . '<module:' . $this->id . '>/<controller:\w+>/',
-                'route' => '<module>/<controller>',
-                'suffix' => ''
-            ], [
-                'pattern' => $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>/',
-                'route' => '<module>/<controller>/<action>',
-                'suffix' => ''
-            ], [
-                'pattern' => $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>/<id:\d+>/',
-                'route' => '<module>/<controller>/<action>',
-                'suffix' => ''
-            ]
+            $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
+            $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+            $prefix . '<module:' . $this->id . '>/<controller:\w+>' => '<module>/<controller>/index',
         ], true);
-
 
         // Get missing translations
         $missingTranslation = $this->missingTranslation;

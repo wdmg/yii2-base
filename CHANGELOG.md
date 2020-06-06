@@ -1,7 +1,11 @@
 Changelog
 =========
 
+## 1.2.*
+ * UrlManager rules fixed
+ 
 ## 1.2.3 (2020-05-29)
+ * Rollback
  * Fixed UrlManager (strict parsing off), added bootstrap autoload in composer
  
 ## 1.2.2 (2020-05-11)

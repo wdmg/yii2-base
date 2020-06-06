@@ -138,7 +138,7 @@ class ActiveRecord extends BaseActiveRecord
             $behaviors = ArrayHelper::merge([
                 'blameable' => [
                     'class' => BlameableBehavior::class,
-                    'createdByAttribute' => 'updated_by',
+                    'updatedByAttribute' => 'updated_by',
                 ]
             ], $behaviors);
         }
