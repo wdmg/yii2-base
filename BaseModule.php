@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.2.3
+ * @version         1.2.4
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -57,7 +57,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.2.3";
+    private $version = "1.2.4";
 
     /**
      * @var integer, priority of initialization
@@ -174,7 +174,6 @@ class BaseModule extends Module implements BootstrapInterface
         $data['name'] = str_replace(Yii::getAlias('@vendor').'/',"", $module->getBasePath());
         $data['label'] = $module->name;
         $data['version'] = $module->getVersion();
-        //$data['_version'] = Yii::$app->extensions[$data['name']]['version'];
         $data['vendor'] = $module->vendor;
         $data['alias'] = $module->getBaseAlias();
         $data['paths']['basePath'] = $module->getBasePath();
@@ -408,12 +407,23 @@ class BaseModule extends Module implements BootstrapInterface
 
         $isBackend = false;
         if (substr(Yii::$app->request->getUrl(), 0, 6) == '/admin')
-            $isBackend = true;
+            return true;
 
         if ($onlyAuth && Yii::$app->getUser()->getIsGuest())
-            $isBackend = false;
+            return false;
 
-        return $isBackend;
+        return false;
+    }
+
+    public function isRestAPI()
+    {
+        if ($this->isConsole())
+            return false;
+
+        if (Yii::$app->controller instanceof \yii\rest\Controller)
+            return true;
+
+        return false;
     }
 
     /**

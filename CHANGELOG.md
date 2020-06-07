@@ -1,7 +1,8 @@
 Changelog
 =========
 
-## 1.2.*
+## 1.2.4 (2020-06-07)
+ * Added new method isRestAPI()
  * UrlManager rules fixed
  
 ## 1.2.3 (2020-05-29)

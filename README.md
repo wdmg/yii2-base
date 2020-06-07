@@ -17,12 +17,8 @@ To install the module, run the following command in the console:
 `$ composer require "wdmg/yii2-base"`
 
 # Status and version [ready to use]
+* v.1.2.4 - Added new method isRestAPI()
 * v.1.2.3 - Fixed UrlManager (strict parsing off), bootstrap autoload
 * v.1.2.2 - Methods compatibility for DynamicModel
 * v.1.2.1 - Added SluggableBehavior(), implement for base ActiveRecord
 * v.1.2.0 - Added base ActiveRecord and ActiveRecordML
-* v.1.1.8 - Log activity of modules and user actions
-* v.1.1.7 - Up to date dependencies
-* v.1.1.6 - Added isBackend(), isConsole() methods
-* v.1.1.5 - Added extended DynamicModel with `setAttributeLabel()` and `setAttributeLabels()` methods
-* v.1.1.4 - Fixed deprecated class declaration
