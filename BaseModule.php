@@ -14,6 +14,7 @@ namespace wdmg\base;
  *
  */
 
+use function GuzzleHttp\Psr7\str;
 use yii\base\BootstrapInterface;
 use Yii;
 use yii\base\Module;
@@ -207,7 +208,7 @@ class BaseModule extends Module implements BootstrapInterface
     public function getOption($option) {
         $value = null;
         if (isset(Yii::$app->options)) {
-            if ($value = Yii::$app->options->get($option)) {
+            if (!$value = Yii::$app->options->get($option)) {
 
                 if (preg_match('/\./', $option)) {
                     $split = explode('.', $option, 2);
@@ -440,11 +441,18 @@ class BaseModule extends Module implements BootstrapInterface
             $prefix = '';
 
         // Add module URL rules
-        $app->getUrlManager()->addRules([
-            $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
-            $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
-            $prefix . '<module:' . $this->id . '>/<controller:\w+>' => '<module>/<controller>/index',
-        ], true);
+        if ($urlManager = $app->getUrlManager()) {
+            $urlManager->addRules([
+                $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
+                $prefix . '<module:' . $this->id . '>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+                $prefix . '<module:' . $this->id . '>/<controller:\w+>' => '<module>/<controller>/index',
+            ], true);
+        }
+
+        // Add short module alias, like `@sitemap` instead of long `@wdmg/sitemap`
+        if ($this->id !== 'base') {
+            Yii::setAlias('@' . $this->id, Yii::getAlias($this->getBaseAlias()));
+        }
 
         // Get missing translations
         $missingTranslation = $this->missingTranslation;

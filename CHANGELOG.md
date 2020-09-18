@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.*
+ * Added short module alias, like `@sitemap` instead of long `@wdmg/sitemap`
+ 
 ## 1.2.4 (2020-06-07)
  * Added new method isRestAPI()
  * UrlManager rules fixed
