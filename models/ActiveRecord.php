@@ -73,23 +73,20 @@ class ActiveRecord extends BaseActiveRecord
     {
         parent::init();
 
-        if (isset(Yii::$app->controller)) {
+        if (is_string($this->moduleId)) {
 
-            if (is_string($this->moduleId)) {
+            if (!($this->_module = Yii::$app->getModule('admin/' . $this->moduleId, false)))
+                $this->_module = Yii::$app->getModule($this->moduleId, false);
 
-                if (!($this->_module = Yii::$app->getModule('admin/' . $this->moduleId, false)))
-                    $this->_module = Yii::$app->getModule($this->moduleId, false);
+        } else if (isset(Yii::$app->controller)) {
+            $this->_module = Yii::$app->controller->module;
+        }
 
-            } else {
-                $this->_module = Yii::$app->controller->module;
-            }
-
-            if (isset($this->_module->id)) {
-                if (isset(Yii::$app->params[$this->_module->id . ".baseRoute"])) {
-                    $this->baseRoute = Yii::$app->params[$this->_module->id . ".baseRoute"];
-                } else if (isset($this->_module->baseRoute)) {
-                    $this->baseRoute = $this->_module->baseRoute;
-                }
+        if (isset($this->_module->id)) {
+            if (isset(Yii::$app->params[$this->_module->id . ".baseRoute"])) {
+                $this->baseRoute = Yii::$app->params[$this->_module->id . ".baseRoute"];
+            } else if (isset($this->_module->baseRoute)) {
+                $this->baseRoute = $this->_module->baseRoute;
             }
         }
     }
@@ -430,6 +427,62 @@ class ActiveRecord extends BaseActiveRecord
             $this->url = $this->getModelUrl($withScheme, false);
 
         return $this->url;
+    }
+
+    /**
+     * Returns the next record(s) (or `id`) based on primary key attribute
+     *
+     * @param bool $instance, flag if it is necessary to return an entity instead of a value
+     * @param int|false $limit, the limit of records to be returned or `false` to return all records
+     * @param string $primaryKey, primary key attribute like `id`, `post_id`
+     * @return array|\yii\db\ActiveQuery|BaseActiveRecord[]
+     */
+    public function getNext($instance = true, $limit = 1, $primaryKey = 'id') {
+
+        $query = $this->find()->where(['>', trim($primaryKey), $this->$primaryKey]);
+
+        if ($limit == 1)
+            $next = $query->limit(1)->one();
+        elseif ($limit)
+            $next = $query->limit(intval($limit))->all();
+        else
+            $next = $query->all();
+
+        if (!$instance && is_array($next))
+            return ArrayHelper::getColumn($next, $primaryKey);
+        elseif (!$instance && is_object($next))
+            return $next->$primaryKey;
+        else
+            return $next;
+
+    }
+
+    /**
+     * Returns the previous record(s) (or `id`) based on primary key attribute
+     *
+     * @param bool $instance, flag if it is necessary to return an entity instead of a value
+     * @param int|false $limit, the limit of records to be returned or `false` to return all records
+     * @param string $primaryKey, primary key attribute like `id`, `post_id`
+     * @return array|\yii\db\ActiveQuery|BaseActiveRecord[]
+     */
+    public function getPrev($instance = true, $limit = 1, $primaryKey = 'id') {
+
+        $query = $this->find()->where(['<', trim($primaryKey), $this->$primaryKey])->orderBy('id DESC');
+
+        if ($limit == 1)
+            $prev = $query->limit(1)->one();
+        elseif ($limit)
+            $prev = $query->limit(intval($limit))->all();
+        else
+            $prev = $query->all();
+
+        if (!$instance && is_array($prev))
+            return ArrayHelper::getColumn($prev, $primaryKey);
+        elseif (!$instance && is_object($prev))
+            return $prev->$primaryKey;
+        else
+            return $prev;
+
     }
 
     /**

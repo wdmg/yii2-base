@@ -2,10 +2,11 @@ Changelog
 =========
 
 ## 1.*
+ * Added `getPrev()` and `getNext()` methods for base ActiveRecord model
  * Added short module alias, like `@sitemap` instead of long `@wdmg/sitemap`
  
 ## 1.2.4 (2020-06-07)
- * Added new method isRestAPI()
+ * Added new method `isRestAPI()`
  * UrlManager rules fixed
  
 ## 1.2.3 (2020-05-29)
@@ -16,11 +17,11 @@ Changelog
  * Methods compatibility for DynamicModel
  
 ## 1.2.1 (2020-05-02)
- * Added formName(), setFormName($name) methods for DynamicModel
+ * Added `formName()`, `setFormName($name)` methods for DynamicModel
  * Added SluggableBehavior(), implement for base ActiveRecord
 
 ## 1.2.0 (2020-04-14)
- * Added getModule() for base ActiveRecord model
+ * Added `getModule()` for base ActiveRecord model
  * Removing DynamicModel to models
  * Fixed ActiveRecordML
  * Added base ActiveRecord and ActiveRecordML models for multi-language implementation
@@ -32,10 +33,10 @@ Changelog
  * Up to date dependencies
 
 ## 1.1.6 (2020-01-04)
- * Added isBackend(), isConsole() methods 
+ * Added `isBackend()`, `isConsole()` methods 
 
 ## 1.1.5 (2019-12-31)
- * Added extended DynamicModel with `setAttributeLabel()` and `setAttributeLabels()` methods
+ * Extended DynamicModel with `setAttributeLabel()` and `setAttributeLabels()` methods
  
 ## 1.1.4 (2019-12-10)
  * Fixed deprecated class declaration
