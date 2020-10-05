@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.2.4
+ * @version         1.3.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -58,7 +58,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.2.4";
+    private $version = "1.3.0";
 
     /**
      * @var integer, priority of initialization
@@ -537,5 +537,58 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function uninstall() {
         return true;
+    }
+
+    /**
+     * Runs command in console (CLI) from web-request
+     *
+     * @param string $command, cli command, like `php yii hello/index`
+     * @param bool $await, flag if need wait the return execution output
+     * @param bool $cli, flag if need execute system comands
+     * @return null|array
+     */
+    public function runConsole($command, $await = true, $cli = false)
+    {
+
+        ignore_user_abort(true);
+        set_time_limit(0);
+
+        $status = null;
+        $output = null;
+
+        $cmd = "";
+        if (!$cli) {
+            $script = Yii::getAlias('@app/yii');
+            $cmd = "php " . $script . " " . $command;
+        } else {
+            $cmd = $command;
+        }
+
+        if (!$await) {
+            header('Connection: close');
+            @ob_end_flush();
+            @ob_flush();
+            @flush();
+
+            if (session_id())
+                session_write_close();
+
+        }
+
+        if ($cmd = escapeshellcmd($cmd)) {
+            if (mb_strtolower(mb_substr(php_uname(), 0, 7)) == "windows" || $cli) {
+                $status = popen($cmd . ' 2>&1', 'r');
+                $output = '';
+                while (!feof($status)) {
+                    $output .= fgets($status);
+                }
+                return [pclose($status), trim($output)];
+            } else {
+                $output = exec($cmd . " > /dev/null 2>&1 &", $status);
+                return [$status, trim($output)];
+            }
+        } else {
+            return null;
+        }
     }
 }

@@ -1,7 +1,8 @@
 Changelog
 =========
 
-## 1.*
+## 1.3.0 (2020-10-05)
+ * Added `runConsole($command, $await = true)` method for BaseModule
  * Added `getPrev()` and `getNext()` methods for base ActiveRecord model
  * Added short module alias, like `@sitemap` instead of long `@wdmg/sitemap`
  

@@ -4,8 +4,12 @@
 ![Progress](https://img.shields.io/badge/progress-ready_to_use-green.svg)
 [![GitHub license](https://img.shields.io/github/license/wdmg/yii2-base.svg)](https://github.com/wdmg/yii2-base/blob/master/LICENSE)
 
+<img src="./docs/images/yii2-base.png" width="100%" alt="Base module for Butterfly.CMS" />
+
 # Yii2 Base Module
-Base module interface
+Base module interface for [Butterfly.CMS](https://github.com/wdmg/butterfly.cms).
+
+Copyrights (c) 2019-2020 [W.D.M.Group, Ukraine](https://wdmg.com.ua/)
 
 # Requirements 
 * PHP 5.6 or higher
@@ -17,7 +21,8 @@ To install the module, run the following command in the console:
 `$ composer require "wdmg/yii2-base"`
 
 # Status and version [ready to use]
-* v.1.2.4 - Added new method isRestAPI()
+* v.1.3.0 - Aliases, added `runConsole()`, `getPrev()` and `getNext()` methods
+* v.1.2.4 - Bugfix, added new method `isRestAPI()`
 * v.1.2.3 - Fixed UrlManager (strict parsing off), bootstrap autoload
 * v.1.2.2 - Methods compatibility for DynamicModel
 * v.1.2.1 - Added SluggableBehavior(), implement for base ActiveRecord

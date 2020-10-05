@@ -11,7 +11,7 @@ use yii\helpers\Inflector;
  * Yii2 SluggableBehavior
  *
  * @category        Helper
- * @version         1.2.1
+ * @version         1.3.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
