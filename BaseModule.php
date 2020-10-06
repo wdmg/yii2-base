@@ -545,9 +545,10 @@ class BaseModule extends Module implements BootstrapInterface
      * @param string $command, cli command, like `php yii hello/index`
      * @param bool $await, flag if need wait the return execution output
      * @param bool $cli, flag if need execute system comands
+     * @param bool $escape, flag if need to escape shell metacharacters
      * @return null|array
      */
-    public function runConsole($command, $await = true, $cli = false)
+    public function runConsole($command, $await = true, $cli = false, $escape = true)
     {
 
         ignore_user_abort(true);
@@ -575,20 +576,19 @@ class BaseModule extends Module implements BootstrapInterface
 
         }
 
-        if ($cmd = escapeshellcmd($cmd)) {
-            if (mb_strtolower(mb_substr(php_uname(), 0, 7)) == "windows" || $cli) {
-                $status = popen($cmd . ' 2>&1', 'r');
-                $output = '';
-                while (!feof($status)) {
-                    $output .= fgets($status);
-                }
-                return [pclose($status), trim($output)];
-            } else {
-                $output = exec($cmd . " > /dev/null 2>&1 &", $status);
-                return [$status, trim($output)];
+        if ($escape)
+            $cmd = escapeshellcmd($cmd);
+
+        if (mb_strtolower(mb_substr(php_uname(), 0, 7)) == "windows" || $cli) {
+            $status = popen($cmd . ' 2>&1', 'r');
+            $output = '';
+            while (!feof($status)) {
+                $output .= fgets($status);
             }
+            return [pclose($status), trim($output)];
         } else {
-            return null;
+            $output = exec($cmd . " > /dev/null 2>&1 &", $status);
+            return [$status, trim($output)];
         }
     }
 }
