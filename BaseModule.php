@@ -9,7 +9,7 @@ namespace wdmg\base;
  * @version         1.3.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
- * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
+ * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
  * @license         https://opensource.org/licenses/MIT Massachusetts Institute of Technology (MIT) License
  *
  */
@@ -207,6 +207,7 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function getOption($option) {
         $value = null;
+
         if (isset(Yii::$app->options)) {
             if (!$value = Yii::$app->options->get($option)) {
 
@@ -359,12 +360,12 @@ class BaseModule extends Module implements BootstrapInterface
 
     /**
      * Check if module exist
-     * @param $id string, the module name (if the module name does not contain the parent module,
-     * it will be assigned from the launch module)
-     * @param $returnInstance boolean, the return instance of module
-     * @return boolean, null or intance
+     *
+     * @param $id
+     * @param bool $returnId
+     * @return string
      */
-    public function moduleLoaded($id, $returnInstance = false)
+    public function moduleExist($id, $returnId = false)
     {
         // If module configured without parent module, like `admin/...`
         if (!(preg_match('/\/[^\s]+/', $id))) {
@@ -373,9 +374,34 @@ class BaseModule extends Module implements BootstrapInterface
                 $id = $parent . '/' . $id;
         }
 
-        if (Yii::$app->hasModule($id)) {
-            if($returnInstance)
-                return Yii::$app->getModule($id);
+        $isExist = (Yii::$app->hasModule($id));
+
+        if ($returnId && $isExist)
+            return $id;
+
+        return $isExist;
+    }
+
+    /**
+     * Check if module exist and return instance
+     *
+     * @param $id string, the module name (if the module name does not contain the parent module,
+     * it will be assigned from the launch module)
+     * @param $returnInstance boolean, the return instance of module
+     * @return boolean, null or intance
+     */
+    public function moduleLoaded($id, $returnInstance = false, $autoLoad = false)
+    {
+        // If module configured without parent module, like `admin/...`
+        if (!(preg_match('/\/[^\s]+/', $id))) {
+            $parent = $this->module->id;
+            if ($parent)
+                $id = $parent . '/' . $id;
+        }
+
+        if ($id = $this->moduleExist($id, true)) {
+            if ($returnInstance)
+                return Yii::$app->getModule($id, $autoLoad);
             else
                 return true;
         } else {
