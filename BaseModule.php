@@ -169,27 +169,31 @@ class BaseModule extends Module implements BootstrapInterface
      * @return array of current module meta data
      */
     public function setMetaData() {
+        $data = [];
         $module = $this;
-        $data['id'] = $module->id;
-        $data['uniqueId'] = $module->getUniqueId();
-        $data['name'] = str_replace(Yii::getAlias('@vendor').'/',"", $module->getBasePath());
-        $data['label'] = $module->name;
-        $data['version'] = $module->getVersion();
-        $data['vendor'] = $module->vendor;
-        $data['alias'] = $module->getBaseAlias();
-        $data['paths']['basePath'] = $module->getBasePath();
-        $data['paths']['controllerPath'] = $module->getControllerPath();
-        $data['paths']['layoutPath'] = $module->getLayoutPath();
-        $data['paths']['viewPath'] = $module->getViewPath();
-        $data['components'] = $module->getComponents();
-        $data['parent']['id'] = $module->module->id;
-        $data['parent']['uniqueId'] = $module->module->getUniqueId();
-        $data['parent']['version'] = $module->module->getVersion();
-        $data['parent']['paths']['basePath'] = $module->module->getBasePath();
-        $data['parent']['paths']['controllerPath'] = $module->module->getControllerPath();
-        $data['parent']['paths']['layoutPath'] = $module->module->getLayoutPath();
-        $data['parent']['paths']['viewPath'] = $module->module->getViewPath();
-        $data['extensions'] = Yii::$app->extensions;
+        if (isset($module->id)) {
+            $data['id'] = $module->id;
+            $data['uniqueId'] = $module->getUniqueId();
+            $data['name'] = str_replace(Yii::getAlias('@vendor').'/',"", $module->getBasePath());
+            $data['label'] = (isset($module->name)) ? $module->name : null;
+            $data['version'] = $module->getVersion();
+            $data['vendor'] = (isset($module->vendor)) ? $module->vendor : null;
+            $data['alias'] = $module->getBaseAlias();
+            $data['paths']['basePath'] = $module->getBasePath();
+            $data['paths']['controllerPath'] = $module->getControllerPath();
+            $data['paths']['layoutPath'] = $module->getLayoutPath();
+            $data['paths']['viewPath'] = $module->getViewPath();
+            $data['components'] = $module->getComponents();
+            $data['parent']['id'] = (isset($module->module->id)) ? $module->module->id : null;
+            $data['parent']['uniqueId'] = $module->module->getUniqueId();
+            $data['parent']['version'] = $module->module->getVersion();
+            $data['parent']['paths']['basePath'] = $module->module->getBasePath();
+            $data['parent']['paths']['controllerPath'] = $module->module->getControllerPath();
+            $data['parent']['paths']['layoutPath'] = $module->module->getLayoutPath();
+            $data['parent']['paths']['viewPath'] = $module->module->getViewPath();
+            $data['extensions'] = Yii::$app->extensions;
+        }
+
         $this->meta = $data;
     }
 
@@ -332,11 +336,10 @@ class BaseModule extends Module implements BootstrapInterface
 
     /**
      * Build dashboard navigation items for NavBar
-     * @param $createLink boolean, if you need to add a menu
-     * item to create a new model (entity)
+     * @param $options array, if you need to add a custom menu routes, like create, update, etc. item
      * @return array of current module nav items
      */
-    public function dashboardNavItems($createLink = false)
+    public function dashboardNavItems($options = false)
     {
         $items = [
             'label' => $this->name,
@@ -344,15 +347,19 @@ class BaseModule extends Module implements BootstrapInterface
             'active' => (\Yii::$app->controller->module->id == $this->id) ? true : false
         ];
 
-        if ($createLink) {
-            $items['items'] = [
-                [
-                    'label' => 'Create',
-                    'icon' => 'fa-plus',
-                    'url' => [$this->routePrefix . '/' . $this->id . '/create'],
-                    'active' => ((\Yii::$app->controller->module->id == $this->id) && (\Yii::$app->controller->action->id == 'create')) ? true : false
-                ],
-            ];
+        if (is_array($options)) {
+            foreach ($options as $route => $option) {
+                if (is_string($route)) {
+                    $items['items'] = [
+                        [
+                            'label' => (isset($option['label'])) ? $option['label'] : $route,
+                            'icon' => (isset($option['icon'])) ? $option['icon'] : null,
+                            'url' => [$this->routePrefix . '/' . $this->id . '/' . ltrim($route, '/')],
+                            'active' => ((\Yii::$app->controller->module->id == $this->id) && (\Yii::$app->controller->action->id == ltrim($route, '/'))) ? true : false
+                        ],
+                    ];
+                }
+            }
         }
 
         return $items;
