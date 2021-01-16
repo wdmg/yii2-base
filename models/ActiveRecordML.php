@@ -6,7 +6,7 @@ namespace wdmg\base\models;
  * Yii2 ActiveRecordML
  *
  * @category        Model
- * @version         1.3.0
+ * @version         1.3.1
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
@@ -376,27 +376,34 @@ class ActiveRecordML extends ActiveRecord
     public function getModelUrl($withScheme = true, $realUrl = false)
     {
         $this->route = $this->getRoute();
+
+
         if (isset($this->alias)) {
             if (isset(Yii::$app->translations) && class_exists('wdmg\translations\models\Languages')) {
                 $translations = Yii::$app->translations->module;
+
+
+                // Init UrlManager and configure or use default
                 if ($config = $translations->urlManagerConfig) {
 
                     if (isset($config['class']))
                         unset($config['class']);
 
-                    // Init UrlManager and configure
                     $urlManager = new \wdmg\translations\components\UrlManager($config);
-                    if (($this->hasAttribute('status') && $this->getAttribute('status') == self::STATUS_DRAFT) && $realUrl) {
-                        if ($withScheme)
-                            return \yii\helpers\Url::to(['default/view', 'route' => $this->route, 'alias' => $this->alias, 'draft' => 'true'], $withScheme);
-                        else
-                            return \yii\helpers\Url::to(['default/view', 'route' => $this->route, 'alias' => $this->alias, 'draft' => 'true']);
-                    } else {
-                        if ($withScheme)
-                            return $urlManager->createAbsoluteUrl([$this->route . '/' . $this->alias, 'lang' => $this->locale]);
-                        else
-                            return $urlManager->createUrl([$this->route . '/' . $this->alias, 'lang' => $this->locale]);
-                    }
+                } else {
+                    $urlManager = Yii::$app->getUrlManager();
+                }
+
+                if (($this->hasAttribute('status') && $this->getAttribute('status') == self::STATUS_DRAFT) && $realUrl) {
+                    if ($withScheme)
+                        return \yii\helpers\Url::to(['default/view', 'route' => $this->route, 'alias' => $this->alias, 'draft' => 'true'], $withScheme);
+                    else
+                        return \yii\helpers\Url::to(['default/view', 'route' => $this->route, 'alias' => $this->alias, 'draft' => 'true']);
+                } else {
+                    if ($withScheme)
+                        return $urlManager->createAbsoluteUrl([$this->route . '/' . $this->alias, 'lang' => $this->locale]);
+                    else
+                        return $urlManager->createUrl([$this->route . '/' . $this->alias, 'lang' => $this->locale]);
                 }
             } else {
                 if (($this->hasAttribute('status') && $this->getAttribute('status') == self::STATUS_DRAFT) && $realUrl) {

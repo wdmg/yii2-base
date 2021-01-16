@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.1 (2021-01-16)
+ * Fixed UrlManager init, extended module dashboardNavItems() method
+ 
 ## 1.3.0 (2020-10-06)
  * Added `runConsole()` method for BaseModule
  * Added `getPrev()` and `getNext()` methods for base ActiveRecord model

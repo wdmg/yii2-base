@@ -21,6 +21,7 @@ To install the module, run the following command in the console:
 `$ composer require "wdmg/yii2-base"`
 
 # Status and version [ready to use]
+* v.1.3.1 - Fixed UrlManager init, extended module dashboardNavItems() method
 * v.1.3.0 - Aliases, added `runConsole()`, `getPrev()` and `getNext()` methods
 * v.1.2.4 - Bugfix, added new method `isRestAPI()`
 * v.1.2.3 - Fixed UrlManager (strict parsing off), bootstrap autoload

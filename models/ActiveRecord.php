@@ -6,7 +6,7 @@ namespace wdmg\base\models;
  * Yii2 ActiveRecord
  *
  * @category        Model
- * @version         1.3.0
+ * @version         1.3.1
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
