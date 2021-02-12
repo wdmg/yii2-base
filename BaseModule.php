@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.3.1
+ * @version         1.3.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
@@ -58,7 +58,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.3.1";
+    private $version = "1.3.2";
 
     /**
      * @var integer, priority of initialization
@@ -283,10 +283,14 @@ class BaseModule extends Module implements BootstrapInterface
      */
     public function registerTranslations()
     {
-        Yii::$app->i18n->translations['app/modules/' . $this->id] = [
+        $moduleId = 'base';
+        if (!is_null($this->id))
+            $moduleId = $this->id;
+
+        Yii::$app->i18n->translations['app/modules/' . $moduleId] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'en-US',
-            'basePath' => '@vendor/' . $this->vendor . '/yii2-' . $this->id . '/messages',
+            'basePath' => '@vendor/' . $this->vendor . '/yii2-' . $moduleId . '/messages',
             'on missingTranslation' => function ($event) {
 
                 if (YII_ENV == 'dev')
@@ -296,8 +300,9 @@ class BaseModule extends Module implements BootstrapInterface
         ];
 
         // Name and description translation of module
-        $this->name = Yii::t('app/modules/' . $this->id, $this->name);
-        $this->description = Yii::t('app/modules/' . $this->id, $this->description);
+        $this->name = Yii::t('app/modules/' . $moduleId, $this->name);
+        $this->description = Yii::t('app/modules/' . $moduleId, $this->description);
+        
     }
 
     /**

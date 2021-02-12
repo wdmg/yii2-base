@@ -6,7 +6,7 @@ namespace wdmg\base\models;
  * Yii2 ActiveRecord
  *
  * @category        Model
- * @version         1.3.1
+ * @version         1.3.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
@@ -15,12 +15,12 @@ namespace wdmg\base\models;
  */
 
 use Yii;
+use yii\db\Expression;
+use yii\db\ActiveRecord as BaseActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use wdmg\base\behaviors\SluggableBehavior;
-use yii\db\Expression;
-use yii\db\ActiveRecord as BaseActiveRecord;
-use yii\helpers\ArrayHelper;
+use wdmg\helpers\ArrayHelper;
 
 /**
  * This is the extended model class of yii\db\ActiveRecord.
@@ -46,6 +46,9 @@ class ActiveRecord extends BaseActiveRecord
 {
     const STATUS_DRAFT = 0; // Model has draft
     const STATUS_PUBLISHED = 1; // Model has been published
+
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = self::SCENARIO_DEFAULT;
 
     public $uniqueAttributes = [];
 
@@ -168,11 +171,19 @@ class ActiveRecord extends BaseActiveRecord
         if ($this->hasAttribute('updated_at'))
             $rules[] = ['updated_at', 'safe'];
 
-        if ($this->hasAttribute('created_by'))
+        if ($this->hasAttribute('created_by')) {
             $rules[] = ['created_by', 'safe'];
 
-        if ($this->hasAttribute('updated_by'))
+            if (class_exists('wdmg\users\models\Users'))
+                $rules[] = ['created_by', 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\users\models\Users::class, 'targetAttribute' => ['created_by' => 'id']];
+        }
+
+        if ($this->hasAttribute('updated_by')) {
             $rules[] = ['updated_by', 'safe'];
+
+            if (class_exists('wdmg\users\models\Users'))
+                $rules[] = ['updated_by', 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\users\models\Users::class, 'targetAttribute' => ['updated_by' => 'id']];
+        }
 
         if ($this->hasAttribute('status'))
             $rules[] = ['status', 'boolean'];
@@ -279,7 +290,7 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
-     * Return author who create model
+     * Return the query relation for author who create model or value.
      *
      * @return int|\yii\db\ActiveQuery
      */
@@ -292,7 +303,7 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
-     * Return author who update model
+     * Return the query relation for author who update model or value.
      *
      * @return int|\yii\db\ActiveQuery
      */

@@ -6,7 +6,7 @@ namespace wdmg\base\models;
  * Yii2 ActiveRecordML
  *
  * @category        Model
- * @version         1.3.1
+ * @version         1.3.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
@@ -19,12 +19,12 @@ namespace wdmg\base\models;
  */
 
 use Yii;
-use wdmg\base\models\ActiveRecord;
-use yii\helpers\ArrayHelper;
+use wdmg\base\models\ActiveRecord as ActiveRecordBase;
+use wdmg\helpers\ArrayHelper;
 
 /**
  * Yii2 ActiveRecord. This is the extended model class of yii\db\ActiveRecord
- * with multi-languages support.
+ * with multi-languages and sub-items support.
  *
  * @property int $source_id
  * @property int $parent_id
@@ -32,16 +32,23 @@ use yii\helpers\ArrayHelper;
  * @package wdmg\base\models
  */
 
-class ActiveRecordML extends ActiveRecord
+class ActiveRecordML extends ActiveRecordBase
 {
-
-    const SCENARIO_CREATE = 'create';
 
     /**
      * @var array, the list of support locales for multi-language versions, like: `en-US`, `ru-RU`
      * @note This variable will be override if you use the `wdmg\yii2-translations` module.
      */
     public $supportLocales = [];
+
+    /**
+     * @var array, list of custom checks applied depending on the scenarios
+     */
+    public $rulesScenarios = [
+        'checkLocale' => self::SCENARIO_CREATE,
+        'doublesCheck' => self::SCENARIO_CREATE,
+        'checkAlias' => self::SCENARIO_CREATE,
+    ];
 
     /**
      * {@inheritdoc}
@@ -62,24 +69,36 @@ class ActiveRecordML extends ActiveRecord
         if ($this->hasAttribute('parent_id')) {
             $rules[] = ['parent_id', 'integer'];
             $rules[] = ['parent_id', 'checkParent'];
+            $rules[] = ['source_id', 'exist', 'skipOnError' => true, 'targetClass' => self::className(), 'targetAttribute' => ['parent_id' => 'id']];
         }
 
         if ($this->hasAttribute('source_id')) {
             $rules[] = ['source_id', 'integer'];
             $rules[] = ['source_id', 'checkSource'];
+            $rules[] = ['source_id', 'exist', 'skipOnError' => true, 'targetClass' => self::className(), 'targetAttribute' => ['source_id' => 'id']];
         }
 
         if ($this->hasAttribute('locale')) {
             $rules[] = ['locale', 'string', 'max' => 10];
-            $rules[] = ['locale', 'checkLocale', 'on' => self::SCENARIO_CREATE];
+            if (isset($this->rulesScenarios['checkLocale'])) {
+                $rules[] = ['locale', 'checkLocale', 'on' => $this->rulesScenarios['checkLocale']];
+                if (isset(Yii::$app->translations) && class_exists('wdmg\translations\models\Languages')) {
+                    $rules[] = ['locale', 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\translations\models\Languages::className(), 'targetAttribute' => ['locale' => 'locale']];
+                }
+            }
         }
 
-        if ($this->hasAttribute('parent_id') && $this->hasAttribute('source_id') && $this->hasAttribute('locale')) {
-            $rules[] = [['parent_id', 'source_id', 'locale'], 'doublesCheck', 'on' => self::SCENARIO_CREATE];
+        if (
+            $this->hasAttribute('parent_id') &&
+            $this->hasAttribute('source_id') &&
+            $this->hasAttribute('locale') &&
+            isset($this->rulesScenarios['doublesCheck'])
+        ) {
+            $rules[] = [['parent_id', 'source_id', 'locale'], 'doublesCheck', 'on' => $this->rulesScenarios['doublesCheck']];
         }
 
-        if ($this->hasAttribute('alias')) {
-            $rules[] = ['alias', 'checkAlias'];
+        if ($this->hasAttribute('alias') && isset($this->rulesScenarios['checkAlias'])) {
+            $rules[] = ['alias', 'checkAlias', 'on' => $this->rulesScenarios['checkAlias']];
         }
 
         return $rules;
@@ -315,6 +334,39 @@ class ActiveRecordML extends ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * Return the query relation for locale or value.
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocale()
+    {
+        if (class_exists('\wdmg\translations\models\Languages'))
+            return $this->hasOne(\wdmg\translations\models\Languages::class, ['locale' => 'locale']);
+        else
+            return $this->locale;
+    }
+
+    /**
+     * Return the query relation for source.
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSource()
+    {
+        return $this->hasOne(self::class, ['id' => 'source_id']);
+    }
+
+    /**
+     * Return the query relation for parent.
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::class, ['id' => 'parent_id']);
     }
 
     /**

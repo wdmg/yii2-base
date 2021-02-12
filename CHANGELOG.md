@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.2 (2021-02-12)
+ * Fixed base models and registerTranslations()
+ 
 ## 1.3.1 (2021-01-16)
  * Fixed UrlManager init, extended module dashboardNavItems() method
  

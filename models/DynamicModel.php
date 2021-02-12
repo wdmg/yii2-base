@@ -6,7 +6,7 @@ namespace wdmg\base\models;
  * Yii2 DynamicModel
  *
  * @category        Model
- * @version         1.3.1
+ * @version         1.3.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
