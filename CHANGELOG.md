@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.*
+ * Parent ID fixed
+ 
 ## 1.3.2 (2021-02-12)
  * Fixed base models and registerTranslations()
  

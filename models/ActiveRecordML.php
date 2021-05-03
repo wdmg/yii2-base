@@ -69,7 +69,7 @@ class ActiveRecordML extends ActiveRecordBase
         if ($this->hasAttribute('parent_id')) {
             $rules[] = ['parent_id', 'integer'];
             $rules[] = ['parent_id', 'checkParent'];
-            $rules[] = ['source_id', 'exist', 'skipOnError' => true, 'targetClass' => self::className(), 'targetAttribute' => ['parent_id' => 'id']];
+            $rules[] = ['parent_id', 'exist', 'skipOnError' => true, 'targetClass' => self::className(), 'targetAttribute' => ['parent_id' => 'id']];
         }
 
         if ($this->hasAttribute('source_id')) {
