@@ -1,9 +1,10 @@
 Changelog
 =========
 
-## 1.3.*
+## 1.4.0 (2023-03-30)
+ * Update dependencies, copyrights
  * Parent ID fixed
- 
+
 ## 1.3.2 (2021-02-12)
  * Fixed base models and registerTranslations()
  
