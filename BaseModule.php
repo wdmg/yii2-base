@@ -6,7 +6,7 @@ namespace wdmg\base;
  * Yii2 Base module
  *
  * @category        Module
- * @version         1.4.0
+ * @version         1.4.1
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-base
  * @copyright       Copyright (c) 2019 - 2023 W.D.M.Group, Ukraine
@@ -41,6 +41,11 @@ class BaseModule extends Module implements BootstrapInterface
     public $description = "Base module interface";
 
     /**
+     * @var string, the current timezone
+     */
+    public $timezone = 'Europe/Kiev';
+
+    /**
      * @var string the vendor name of module
      */
     private $vendor = "wdmg";
@@ -58,7 +63,7 @@ class BaseModule extends Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.4.0";
+    private $version = "1.4.1";
 
     /**
      * @var integer, priority of initialization
@@ -111,6 +116,16 @@ class BaseModule extends Module implements BootstrapInterface
 
         // Set meta data of current module
         $this->setMetaData();
+
+	    // Set default timezone if not exist
+	    if ($this->timezone)
+		    ini_set('date.timezone', $this->timezone);
+	    else if (!ini_get('date.timezone'))
+		    ini_set('date.timezone', 'Europe/London');
+
+	    if (ini_get('date.timezone'))
+		    date_default_timezone_set(ini_get('date.timezone'));
+
     }
 
     /**

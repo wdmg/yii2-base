@@ -21,6 +21,7 @@ To install the module, run the following command in the console:
 `$ composer require "wdmg/yii2-base"`
 
 # Status and version [ready to use]
+* v.1.4.1 - Some fix, add timezone set
 * v.1.4.0 - Update dependencies, copyrights
 * v.1.3.2 - Fixed base models and registerTranslations()
 * v.1.3.1 - Fixed UrlManager init, extended module dashboardNavItems() method

@@ -82,12 +82,12 @@ class SluggableBehavior extends BaseSluggableBehavior
 
         // Configure  Inflector helper
         if (!is_null($this->locale) && is_string($this->locale))
-            $this->_inflector::$transliterator = $this->locale;
+            $this->_inflector->transliterator = $this->locale;
 
         if (!is_null($this->fallback) && is_array($this->fallback))
-            $this->_inflector::$transliteration = $this->fallback;
+            $this->_inflector->transliteration = $this->fallback;
         elseif (!is_null($this->fallback) && is_callable($this->fallback))
-            $this->_inflector::$transliteration = call_user_func($this->fallback, $this->_inflector::$transliteration);
+            $this->_inflector->transliteration = call_user_func($this->fallback, $this->_inflector->transliteration);
 
     }
 
@@ -102,6 +102,6 @@ class SluggableBehavior extends BaseSluggableBehavior
      */
     protected function generateSlug($slugParts)
     {
-        return $this->_inflector::slug(implode($this->replacement, $slugParts), $this->replacement, $this->lowercase);
+        return $this->_inflector->slug(implode($this->replacement, $slugParts), $this->replacement, $this->lowercase);
     }
 }
