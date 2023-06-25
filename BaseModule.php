@@ -14,6 +14,7 @@ namespace wdmg\base;
  *
  */
 
+use wdmg\helpers\ArrayHelper;
 use function GuzzleHttp\Psr7\str;
 use yii\base\BootstrapInterface;
 use Yii;
@@ -359,7 +360,7 @@ class BaseModule extends Module implements BootstrapInterface
      * @param $options array, if you need to add a custom menu routes, like create, update, etc. item
      * @return array of current module nav items
      */
-    public function dashboardNavItems($options = false)
+    public function dashboardNavItems($options = null)
     {
         $items = [
             'label' => $this->name,
@@ -382,7 +383,20 @@ class BaseModule extends Module implements BootstrapInterface
             }
         }
 
-        return $items;
+
+	    if (!is_null($options)) {
+
+		    if (isset($options['count'])) {
+			    $items['label'] .= '<span class="badge badge-default float-right">' . $options['count'] . '</span>';
+			    unset($options['count']);
+		    }
+
+		    if (is_array($options))
+			    $items = ArrayHelper::merge($items, $options);
+
+	    }
+
+	    return $items;
     }
 
     /**

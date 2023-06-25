@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.4.*
+ * Fix nav menu for dashboard
+
 ## 1.4.1 (2023-06-24)
  * Some fix, add timezone set
 
